@@ -380,6 +380,11 @@ public class SysUtils {
 		if (f.exists()) {
 			return s;
 		}
+		s = "/su/bin/su";
+		f = new File(s);
+		if (f.exists()) {
+			return s;
+		}
 		return null;
 	}
 

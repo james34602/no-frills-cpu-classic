@@ -9,7 +9,7 @@
 		android:title="@string/prefs_theme" />
 
 	<CheckBoxPreference
-		android:defaultValue="false"
+		android:defaultValue="true"
 		android:key="disable_safety_valve"
 		android:persistent="true"
 		android:summaryOff="@string/prefs_disable_safety_valve_summary_off"

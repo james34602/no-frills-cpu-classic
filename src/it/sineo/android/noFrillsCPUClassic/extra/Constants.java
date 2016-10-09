@@ -10,8 +10,6 @@ public class Constants {
 	public final static String PREF_IOSCHEDULER = "ioscheduler";
 	public final static String PREF_APPLY_ON_BOOT = "apply_on_boot";
 
-	public final static String LAST_CHANGELOG_VERSION_VIEWED = "last_changelog_viewed";
-
 	public final static String CHECK_SHUTDOWN_OK = "shutdown_ok";
 	/**
 	 * Only to be checked if CHECK_SHUTDOWN_OK is false.
@@ -66,7 +64,7 @@ public class Constants {
 	public final static boolean PREF_DEFAULT_UPDATE_CURFREQ = false;
 
 	public final static String PREF_DISABLE_SAFETY_VALVE = "disable_safety_valve";
-	public final static boolean PREF_DEFAULT_DISABLE_SAFETY_VALVE = false;
+	public final static boolean PREF_DEFAULT_DISABLE_SAFETY_VALVE = true;
 
 	public final static String PREF_CHANGE_PERMISSIONS = "change_permissions";
 	public final static boolean PREF_DEFAULT_CHANGE_PERMISSIONS = false;

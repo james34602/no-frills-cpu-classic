@@ -1,6 +1,5 @@
 package it.sineo.android.noFrillsCPUClassic.activity;
 
-import it.sineo.android.changelog.ChangelogFactory;
 import it.sineo.android.noFrillsCPUClassic.R;
 import it.sineo.android.noFrillsCPUClassic.extra.Constants;
 import it.sineo.android.noFrillsCPUClassic.extra.Frequency;
@@ -8,14 +7,9 @@ import it.sineo.android.noFrillsCPUClassic.extra.SysUtils;
 import it.sineo.android.noFrillsCPUClassic.extra.Theme;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
@@ -30,7 +24,6 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
@@ -71,12 +64,6 @@ public class MainActivity extends Activity {
 			builder.setCancelable(false);
 			builder.setNegativeButton(R.string.exit, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {
-					finish();
-				}
-			});
-			builder.setPositiveButton(R.string.send, new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int which) {
-					prepareAndSendEmail();
 					finish();
 				}
 			});
@@ -291,10 +278,6 @@ public class MainActivity extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case R.id.menu_send_info: {
-				prepareAndSendEmail();
-				return true;
-			}
 			case R.id.menu_view_stats: {
 				Intent statsActivity = new Intent(this, StatsActivity.class);
 				startActivity(statsActivity);
@@ -312,62 +295,6 @@ public class MainActivity extends Activity {
 			default:
 				return super.onOptionsItemSelected(item);
 		}
-	}
-
-	protected void prepareAndSendEmail() {
-		String[] email = new String[] {
-			Constants.DEVELOPER_MAIL
-		};
-		String body = SysUtils.discoverCPUData();
-		String version = "";
-		try {
-			PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), 0);
-			version = info.versionName;
-		} catch (PackageManager.NameNotFoundException pmnnfex) {
-			pmnnfex.printStackTrace();
-		}
-		/*
-		 * Hard-coded because it's sent to me.
-		 */
-		String subject = "No-frills CPU Data [" + version + "]";
-
-		Intent share = new Intent(android.content.Intent.ACTION_SEND);
-		share.setType(/* "text/plain" */"message/rfc822");
-		share.putExtra(Intent.EXTRA_EMAIL, email);
-		share.putExtra(Intent.EXTRA_SUBJECT, subject);
-		share.putExtra(Intent.EXTRA_TEXT, body);
-		// Toast.makeText(this, body, Toast.LENGTH_LONG).show();
-		try {
-			startActivity(Intent.createChooser(share, getString(R.string.dlg_send_title)));
-		} catch (ActivityNotFoundException anfex) {
-			/*
-			 * No activity is able to handle message/rfc822 type.
-			 */
-			Toast.makeText(this, R.string.err_no_email_client, Toast.LENGTH_LONG).show();
-		}
-	}
-
-	protected void displayChangelogIfNeeded() {
-		try {
-			PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-			int versionCode = packageInfo.versionCode;
-
-			SharedPreferences settings = getSharedPreferences(getPackageName(), MODE_PRIVATE);
-			int viewedChangelogVersion = settings.getInt(Constants.LAST_CHANGELOG_VERSION_VIEWED, 0);
-
-			if (viewedChangelogVersion < versionCode) {
-				Editor editor = settings.edit();
-				editor.putInt(Constants.LAST_CHANGELOG_VERSION_VIEWED, versionCode);
-				editor.commit();
-				displayChangeLog();
-			}
-		} catch (NameNotFoundException e) {
-			Log.w(Constants.APP_TAG, "Unable to get version code. Will not show changelog", e);
-		}
-	}
-
-	protected void displayChangeLog() {
-		ChangelogFactory.buildAlertDialog(this, R.xml.changelog, R.drawable.ic_launcher).show();
 	}
 
 	protected void displayAboutDialog() {

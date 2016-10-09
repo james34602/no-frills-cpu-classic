@@ -14,15 +14,6 @@
 			style="@style/BaseText.About"
 			android:text="@string/about_info_version" />
 
-		<ImageView
-			android:id="@+id/donate_button"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_gravity="center_horizontal|center_vertical"
-			android:contentDescription="@string/about_info_donate"
-			android:paddingTop="12dip"
-			android:src="@drawable/donate" />
-
 		<TextView
 			android:id="@+id/about_info_author"
 			style="@style/BaseText.About"
